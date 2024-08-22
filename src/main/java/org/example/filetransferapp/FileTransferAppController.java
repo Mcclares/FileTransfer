@@ -32,6 +32,7 @@ public class FileTransferAppController {
     private double yOffset = 0;
     private Stage stage;
     public static String getPath() {
+        //Throw null error
         return PathText.getText();
     }
 
