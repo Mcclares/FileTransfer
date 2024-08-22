@@ -1,0 +1,40 @@
+.root {
+
+    -fx-background-color: #363434;
+}
+
+.button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+
+}
+#BtnClose {
+    -fx-background-color: #ab1d1d;
+
+}
+#BtnClose:hover {
+    -fx-background-color: #691212;
+    -fx-cursor: hand;
+
+}
+
+.button:hover {
+    -fx-background-color: #0056b3;
+    -fx-font-size: 14px;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-padding: 5;
+}
+#TopPane {
+    -fx-background-color: #4e4f52;
+
+    /*-fx-padding: 10px;*/
+    /*-fx-border-width: 2px;*/
+    /*-fx-border-color: #2980b9;*/
+    /*-fx-border-radius: 5px;*/
+}
