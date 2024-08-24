@@ -40,13 +40,9 @@ public class FileTransferApp extends Application {
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
+
             FileServer server = new FileServer(5555, FileTransferAppController.getPath());
             new Thread(server::start).start();
-
-
-//            Запуск сервера для получения файлов
-
-
 
             primaryStage.show();
         } catch (IOException e) {

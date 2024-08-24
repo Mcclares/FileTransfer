@@ -1,12 +1,8 @@
 package org.example.filetransferapp;
 
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -15,7 +11,11 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 import java.io.File;
+
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 public class FileTransferAppController {
     @FXML
@@ -23,18 +23,51 @@ public class FileTransferAppController {
     @FXML
     private Button BtnClose;
     @FXML Button BtnChoose;
+    @FXML
+    private Text PathText;
 
     @FXML
     private Pane TopPane;
-    @FXML
-    private static Text PathText;
+
+
     private double xOffset = 0;
     private double yOffset = 0;
     private Stage stage;
     public static String getPath() {
-        //Throw null error
-        return PathText.getText();
+        String userHome = System.getProperty("user.home");
+        String desktopPath;
+
+        if (isWindows()) {
+            desktopPath = STR."\{userHome}\\Desktop\\serverFiles";
+        } else if (isMac()) {
+            desktopPath = STR."\{userHome}/Desktop/serverFiles";
+        }else if(isUnix()) {
+            desktopPath = STR."\{userHome}/Desktop/serverFiles";
+        }else {
+            throw new UnsupportedOperationException("Unknown operating system.");
+        }
+        try {
+            Files.createDirectory(Paths.get(desktopPath));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return desktopPath;
     }
+
+    private static boolean isWindows() {
+        return System.getProperty("os.name").toLowerCase().contains("win");
+    }
+
+    private static boolean isMac() {
+        return System.getProperty("os.name").toLowerCase().contains("mac");
+    }
+
+    private static boolean isUnix() {
+        return System.getProperty("os.name").toLowerCase().contains("nix") ||
+                System.getProperty("os.name").toLowerCase().contains("nux") ||
+                System.getProperty("os.name").toLowerCase().contains("aix");
+    }
+
 
     @FXML
     protected void handleActionClose(ActionEvent event) {
