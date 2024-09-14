@@ -1,20 +1,26 @@
 package org.example.filetransferapp;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javafx.animation.FadeTransition;
 
 
 public class FileTransferAppController {
@@ -25,9 +31,18 @@ public class FileTransferAppController {
     @FXML Button BtnChoose;
     @FXML
     private Text PathText;
+    @FXML
+    private Button GoButton;
 
     @FXML
     private Pane TopPane;
+    @FXML
+    private TextField IpTextField;
+
+    @FXML
+    private File selectedSendFile;
+    @FXML
+    private Text ErrorText;
 
 
     private double xOffset = 0;
@@ -76,6 +91,7 @@ public class FileTransferAppController {
         Stage stage = (Stage) BtnClose.getScene().getWindow();
         stage.close();
     }
+
     @FXML
     protected void handleMinAction(ActionEvent event) {
         Stage stage = (Stage) BtnMin.getScene().getWindow();
@@ -109,8 +125,66 @@ public class FileTransferAppController {
             System.out.println("Open file");
             System.out.println(selectedFile.getPath());
             PathText.setText("File is attached");
+            selectedSendFile = selectedFile;
+        }
+    }
+    @FXML
+    protected void sendingAction (ActionEvent event) {
+
+        if(selectedSendFile == null) {
+            Platform.runLater(() -> {
+                ErrorText.setText("Please choose file for sending");
+//                fadeTextInAndOut(2);
+            });
+            event.consume();
+            return;
+        }
+        if(IpTextField.getText().isEmpty()) {
+            Platform.runLater(() -> {
+                ErrorText.setText("Please write Ip address");
+//                fadeTextInAndOut(2);
+            });
+            event.consume();
+            return;
         }
 
+        FileClient client = new FileClient(IpTextField.getText(),5555);
+        try {
+            client.sendFile(selectedSendFile.getPath());
+            Platform.runLater(() -> {
+                ErrorText.setText("File sent successfully");
+                fadeTextInAndOut(2);
+            });
+        } catch (Exception e) {
+            Platform.runLater(() -> {
+                ErrorText.setText(STR."Failed to send file \{e.getMessage()}");
+                fadeTextInAndOut(2);
+            });
+            event.consume();
+        }
+    }
 
+    //Example
+    private void showErrorTextForDuration(int seconds) {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(seconds), event -> ErrorText.setText(""))
+        );
+        timeline.setCycleCount(1);
+        timeline.play();
+    }
+
+    private void fadeTextInAndOut(int durationInSeconds) {
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1));
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+        fadeIn.setOnFinished(event -> {
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), ErrorText);
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.setDelay(Duration.seconds(durationInSeconds));
+            fadeOut.play();
+        });
+        fadeIn.play();
     }
 }
+

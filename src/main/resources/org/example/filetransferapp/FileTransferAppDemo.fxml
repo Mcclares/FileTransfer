@@ -31,6 +31,11 @@
                   <Font size="18.0" />
                </font>
             </Text>
+            <Text fx:id="ErrorText" fill="RED" layoutX="261.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="324.13671875">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </bottom>
@@ -42,7 +47,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <TextField layoutX="14.0" layoutY="182.0" prefHeight="29.0" prefWidth="226.0" promptText="Computer IP">
+            <TextField fx:id="IpTextField" layoutX="14.0" layoutY="182.0" prefHeight="29.0" prefWidth="226.0" promptText="Computer IP">
                <font>
                   <Font size="14.0" />
                </font>
@@ -52,12 +57,12 @@
                   <Font size="18.0" />
                </font>
             </Text>
-            <Button layoutX="14.0" layoutY="238.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="123.0" text="Go!">
+            <Button fx:id="GoButton" layoutX="14.0" layoutY="238.0" mnemonicParsing="false" onAction="#sendingAction" prefHeight="57.0" prefWidth="123.0" text="Go!">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="BtnChoose1" layoutX="383.0" layoutY="98.0" mnemonicParsing="false" onAction="#chooseButtonAction" prefHeight="56.0" prefWidth="170.0" text="Choose path ">
+            <Button fx:id="BtnChooseReceiving" layoutX="383.0" layoutY="98.0" mnemonicParsing="false" onAction="#chooseButtonAction" prefHeight="56.0" prefWidth="170.0" text="Choose path ">
                <font>
                   <Font size="14.0" />
                </font>
